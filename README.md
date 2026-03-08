@@ -59,15 +59,15 @@ Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/
 
 3. Accede al icono de la extensión de PlatformIO para cargar las opciones de la plataforma.
 
-<img width="241" height="153" alt="image" src="https://github.com/user-attachments/assets/d43998b3-2de2-45a4-b30b-b72814a21b6e" />
+      <img width="241" height="153" alt="image" src="https://github.com/user-attachments/assets/d43998b3-2de2-45a4-b30b-b72814a21b6e" />
 
-4. En la interfaz encontrarás iconos para:
+4. En la parte extrema inferior interfaz encontrarás iconos para:
    * **Compilación (Checkmark)**.
    * **Grabar programa en Arduino (Flecha)**.
    * **Limpiar builds (Tacho de basura):** Se recomienda usar esta opción antes de compilar y grabar para evitar cargar versiones antiguas.
    * **Terminal serie (Icono de enchufe/monitor)**.
 
-<img width="659" height="23" alt="image" src="https://github.com/user-attachments/assets/0b7a915b-3c5d-43d9-8eb5-f534e6d4bc08" />
+   <img width="659" height="23" alt="image" src="https://github.com/user-attachments/assets/0b7a915b-3c5d-43d9-8eb5-f534e6d4bc08" />
 
 
 ## 5. Simulación y Archivos Compilados
