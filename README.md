@@ -26,7 +26,7 @@ Una vez instalado Visual Studio Code:
 
 <img width="510" height="176" alt="{3711E335-3EE7-4779-80BC-BB3D4E13E8C8}" src="https://github.com/user-attachments/assets/9db170ef-8cc4-41ed-bf95-dd70a7dbfab7" />
 
-##En este paso puede que no termine de instalar y nos pida definir el path o instalar python, si no es el caso, saltear el siguiente paso.
+## En este paso puede que no termine de instalar y nos pida definir el path o instalar python, si no es el caso, saltear el siguiente paso.
 
 ### Configuración de Python
 Si PlatformIO no detecta Python automáticamente, es posible que debas instalarlo manualmente:
