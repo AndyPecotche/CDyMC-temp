@@ -24,6 +24,10 @@ Una vez instalado Visual Studio Code:
 
 <img width="630" height="341" alt="image" src="https://github.com/user-attachments/assets/d3df7c7a-6470-4be3-8e49-f425624be0af" />
 
+<img width="510" height="176" alt="{3711E335-3EE7-4779-80BC-BB3D4E13E8C8}" src="https://github.com/user-attachments/assets/9db170ef-8cc4-41ed-bf95-dd70a7dbfab7" />
+
+##En este paso puede que no termine de instalar y nos pida definir el path o instalar python, si no es el caso, saltear el siguiente paso.
+
 ### Configuración de Python
 Si PlatformIO no detecta Python automáticamente, es posible que debas instalarlo manualmente:
 
@@ -34,7 +38,6 @@ Si PlatformIO no detecta Python automáticamente, es posible que debas instalarl
   ``` 
 * **En Windows:**
   Descarga el instalador desde [python.org](https://www.python.org/downloads/windows/) y asegúrate de marcar la opción para **agregar Python al PATH** durante la instalación.
-
 
 <img width="565" height="346" alt="image" src="https://github.com/user-attachments/assets/dcd0411e-df57-4f2d-a9dc-c388d5b46b3d" />
 
@@ -57,6 +60,11 @@ Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/
 1. Abre el proyecto desde **File → Open folder**.
 
 <img width="653" height="327" alt="image" src="https://github.com/user-attachments/assets/307276fd-7293-4ee4-85a7-4689149e5017" />
+
+La primera vez inicializara la configuracion necesaria:
+
+<img width="492" height="148" alt="{DE32E3E8-71B9-45BD-A9E0-92E88557140E}" src="https://github.com/user-attachments/assets/fbb49ba4-658c-4e95-9adc-23de8c38b35b" />
+
 
 3. Accede al icono de la extensión de PlatformIO para cargar las opciones de la plataforma.
 
