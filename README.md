@@ -51,7 +51,7 @@ extra_scripts = post:scripts/copy_sources_for_proteus.py
 ``` 
 
 ### Descarga del proyecto base
-Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/AndyPecotche/CDyMC-temp/archive/5b8f4ef347cc84534499874ecf4e2d45f3614554.zip).
+Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/AndyPecotche/CDyMC-temp/archive/refs/heads/main.zip).
 
 ## 4. Uso de la Interfaz
 1. Abre el proyecto desde **File → Open folder**.
