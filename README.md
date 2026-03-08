@@ -22,7 +22,7 @@ Una vez instalado Visual Studio Code:
 1. Dirígete a la sección de **Extensiones**.
 2. Busca **"platformio"** e instala la extensión oficial.
 
-<img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/f11e7f18-f3a4-4873-bb5e-03187992ddf3" />
+<img width="630" height="341" alt="image" src="https://github.com/user-attachments/assets/d3df7c7a-6470-4be3-8e49-f425624be0af" />
 
 ### Configuración de Python
 Si PlatformIO no detecta Python automáticamente, es posible que debas instalarlo manualmente:
@@ -35,7 +35,7 @@ Si PlatformIO no detecta Python automáticamente, es posible que debas instalarl
 * **En Windows:**
   Descarga el instalador desde [python.org](https://www.python.org/downloads/windows/) y asegúrate de marcar la opción para **agregar Python al PATH** durante la instalación.
 
-<img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/f3f9c791-ca7c-4355-8429-060f489069fc" />
+<img width="654" height="325" alt="image" src="https://github.com/user-attachments/assets/56170e4b-52bf-4827-a718-851668817d5d" />
 
 ## 3. Configuración del Proyecto
 Con la instalación finalizada, puedes iniciar un proyecto utilizando un archivo `platformio.ini` con la siguiente configuración base:
@@ -52,7 +52,7 @@ extra_scripts = post:scripts/copy_sources_for_proteus.py
 ### Descarga del proyecto base
 Puedes obtener el proyecto base desde este enlace de [GitHub](https://github.com/AndyPecotche/CDyMC-temp/archive/5b8f4ef347cc84534499874ecf4e2d45f3614554.zip).
 
-<img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/53e6b75a-e8f5-440d-8297-a53457da11a5" />
+<img width="244" height="154" alt="image" src="https://github.com/user-attachments/assets/fe0ae6e9-0247-4976-a208-f30d8d1a898c" />
 
 ## 4. Uso de la Interfaz
 1. Abre el proyecto desde **File → Open folder**.
@@ -66,7 +66,8 @@ Puedes obtener el proyecto base desde este enlace de [GitHub](https://github.com
    * **Limpiar builds (Tacho de basura):** Se recomienda usar esta opción antes de compilar y grabar para evitar cargar versiones antiguas.
    * **Terminal serie (Icono de enchufe/monitor)**.
 
-<img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/3a72d2e2-ba41-422b-ba83-8087987a439c" />
+<img width="659" height="23" alt="image" src="https://github.com/user-attachments/assets/0b7a915b-3c5d-43d9-8eb5-f534e6d4bc08" />
+
 
 ## 5. Simulación y Archivos Compilados
 El archivo compilado `firmware.elf` se genera en la ruta `template/.pio/build/ATmega328P`. 
