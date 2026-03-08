@@ -35,6 +35,7 @@ Si PlatformIO no detecta Python automáticamente, es posible que debas instalarl
 * **En Windows:**
   Descarga el instalador desde [python.org](https://www.python.org/downloads/windows/) y asegúrate de marcar la opción para **agregar Python al PATH** durante la instalación.
 
+
 <img width="565" height="346" alt="image" src="https://github.com/user-attachments/assets/dcd0411e-df57-4f2d-a9dc-c388d5b46b3d" />
 
 ## 3. Configuración del Proyecto
@@ -66,6 +67,7 @@ Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/
    * **Grabar programa en Arduino (Flecha)**.
    * **Limpiar builds (Tacho de basura):** Se recomienda usar esta opción antes de compilar y grabar para evitar cargar versiones antiguas.
    * **Terminal serie (Icono de enchufe/monitor)**.
+
 
    <img width="659" height="23" alt="image" src="https://github.com/user-attachments/assets/0b7a915b-3c5d-43d9-8eb5-f534e6d4bc08" />
 
