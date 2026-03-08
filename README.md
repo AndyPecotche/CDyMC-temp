@@ -59,7 +59,7 @@ Podes obtener el proyecto base desde este enlace de [GitHub](https://github.com/
 
 3. Accede al icono de la extensión de PlatformIO para cargar las opciones de la plataforma.
 
-<img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/759200f2-7723-4445-b7eb-f472efd49e32" />
+<img width="241" height="153" alt="image" src="https://github.com/user-attachments/assets/d43998b3-2de2-45a4-b30b-b72814a21b6e" />
 
 4. En la interfaz encontrarás iconos para:
    * **Compilación (Checkmark)**.
