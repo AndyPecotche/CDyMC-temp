@@ -35,7 +35,7 @@ Si PlatformIO no detecta Python automáticamente, es posible que debas instalarl
 * **En Windows:**
   Descarga el instalador desde [python.org](https://www.python.org/downloads/windows/) y asegúrate de marcar la opción para **agregar Python al PATH** durante la instalación.
 
-<img width="654" height="325" alt="image" src="https://github.com/user-attachments/assets/56170e4b-52bf-4827-a718-851668817d5d" />
+<img width="565" height="346" alt="image" src="https://github.com/user-attachments/assets/dcd0411e-df57-4f2d-a9dc-c388d5b46b3d" />
 
 ## 3. Configuración del Proyecto
 Con la instalación finalizada, puedes iniciar un proyecto utilizando un archivo `platformio.ini` con la siguiente configuración base:
@@ -52,11 +52,12 @@ extra_scripts = post:scripts/copy_sources_for_proteus.py
 ### Descarga del proyecto base
 Puedes obtener el proyecto base desde este enlace de [GitHub](https://github.com/AndyPecotche/CDyMC-temp/archive/5b8f4ef347cc84534499874ecf4e2d45f3614554.zip).
 
-<img width="244" height="154" alt="image" src="https://github.com/user-attachments/assets/fe0ae6e9-0247-4976-a208-f30d8d1a898c" />
-
 ## 4. Uso de la Interfaz
 1. Abre el proyecto desde **File → Open folder**.
-2. Accede al icono de la extensión de PlatformIO para cargar las opciones de la plataforma.
+
+<img width="653" height="327" alt="image" src="https://github.com/user-attachments/assets/307276fd-7293-4ee4-85a7-4689149e5017" />
+
+3. Accede al icono de la extensión de PlatformIO para cargar las opciones de la plataforma.
 
 <img width="1148" height="622" alt="image" src="https://github.com/user-attachments/assets/759200f2-7723-4445-b7eb-f472efd49e32" />
 
