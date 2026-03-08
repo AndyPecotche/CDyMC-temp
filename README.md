@@ -1,14 +1,14 @@
 # Guía de instalación y uso de PlatformIO para desarrollo con ATmega328p
 
-[cite_start]Esta guía detalla los pasos para la instalación y configuración de PlatformIO, ejemplificando el proceso en Ubuntu y Windows. 
+Esta guía detalla los pasos para la instalación y configuración de PlatformIO, ejemplificando el proceso en Ubuntu y Windows. 
 
-[cite_start]Para otras distribuciones de Linux o macOS, los pasos pueden variar ligeramente, pero cada plataforma cuenta con su propio instructivo oficial.
+Para otras distribuciones de Linux o macOS, los pasos pueden variar ligeramente, pero cada plataforma cuenta con su propio instructivo oficial.
 
 ## 1. Instalación de Visual Studio Code
 
 ### Linux (Debian/Ubuntu)
-1. [cite_start]Descarga el archivo `.deb` desde la [página oficial](https://code.visualstudio.com/download)[cite: 1].
-2. [cite_start]Consulta el [instructivo oficial](https://code.visualstudio.com/docs/setup/linux) si es necesario.
+1. Descarga el archivo `.deb` desde la [página oficial](https://code.visualstudio.com/download)[cite: 1].
+2. Consulta el [instructivo oficial](https://code.visualstudio.com/docs/setup/linux) si es necesario.
 3. Ejecuta el siguiente comando en la terminal dentro de la carpeta donde se descargó el archivo:
    ```bash
    sudo apt install ./<nombre_del_archivo>.deb
@@ -43,7 +43,8 @@ board = uno
 framework = arduino
 build_type = debug
 extra_scripts = post:scripts/copy_sources_for_proteus.py
-[cite_start]``` 
+[cite_start]
+``` 
 
 ### Descarga del proyecto base
 Puedes obtener el proyecto base desde este enlace de [GitHub](https://github.com/AndyPecotche/CDyMC-temp/archive/5b8f4ef347cc84534499874ecf4e2d45f3614554.zip).
