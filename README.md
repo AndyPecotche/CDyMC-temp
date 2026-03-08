@@ -74,7 +74,7 @@ La primera vez inicializara la configuracion necesaria:
    * **Compilación (Checkmark)**.
    * **Grabar programa en Arduino (Flecha)**.
    * **Limpiar builds (Tacho de basura):** Se recomienda usar esta opción antes de compilar y grabar para evitar cargar versiones antiguas.
-   * **Terminal serie (Icono de enchufe/monitor)**.
+   * **Terminal serie (Icono de enchufe)**.
 
 
    <img width="659" height="23" alt="image" src="https://github.com/user-attachments/assets/0b7a915b-3c5d-43d9-8eb5-f534e6d4bc08" />
