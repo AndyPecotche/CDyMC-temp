@@ -7,7 +7,7 @@ Para otras distribuciones de Linux o macOS, los pasos pueden variar ligeramente,
 ## 1. Instalación de Visual Studio Code
 
 ### Linux (Debian/Ubuntu)
-1. Descarga el archivo `.deb` desde la [página oficial](https://code.visualstudio.com/download)[cite: 1].
+1. Descarga el archivo `.deb` desde la [página oficial](https://code.visualstudio.com/download)
 2. Consulta el [instructivo oficial](https://code.visualstudio.com/docs/setup/linux) si es necesario.
 3. Ejecuta el siguiente comando en la terminal dentro de la carpeta donde se descargó el archivo:
    ```bash
@@ -15,12 +15,12 @@ Para otras distribuciones de Linux o macOS, los pasos pueden variar ligeramente,
    ``` 
 
 ### Windows
-* [cite_start]Descarga y ejecuta el instalador `.exe` desde la [página oficial](https://code.visualstudio.com/download)[cite: 1].
+* Descarga y ejecuta el instalador `.exe` desde la [página oficial](https://code.visualstudio.com/download)
 
 ## 2. Instalación de la extensión PlatformIO
 Una vez instalado Visual Studio Code:
 1. Dirígete a la sección de **Extensiones**.
-2. [cite_start]Busca **"platformio"** e instala la extensión oficial.
+2. Busca **"platformio"** e instala la extensión oficial.
 
 ### Configuración de Python
 Si PlatformIO no detecta Python automáticamente, es posible que debas instalarlo manualmente:
@@ -29,7 +29,7 @@ Si PlatformIO no detecta Python automáticamente, es posible que debas instalarl
   ```bash
   sudo apt install python3
   sudo apt install python3-venv
-  [cite_start]``` 
+  ``` 
 * **En Windows:**
   Descarga el instalador desde [python.org](https://www.python.org/downloads/windows/) y asegúrate de marcar la opción para **agregar Python al PATH** durante la instalación.
 
@@ -43,7 +43,6 @@ board = uno
 framework = arduino
 build_type = debug
 extra_scripts = post:scripts/copy_sources_for_proteus.py
-[cite_start]
 ``` 
 
 ### Descarga del proyecto base
