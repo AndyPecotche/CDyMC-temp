@@ -1,4 +1,4 @@
-#include <avr/io.h> // Definici�n de Registros del microcontrolador
+#include <avr/io.h> // Definicion de Registros del microcontrolador
 #define F_CPU 16000000UL // Especifico la frecuencia de reloj del MCU en 16MHz
 
 int main(void)
