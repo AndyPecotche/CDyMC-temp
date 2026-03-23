@@ -90,7 +90,7 @@ Es recomendable antes de grabar un nuevo programa en la placa, darle a clean (ic
 Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_for_proteus.py`) copiará automáticamente los archivos `.c` y `.h` de la carpeta `src` a la carpeta del build. Teniendo los archivos originales en una carpeta src junto al archivo .elf, nos permite poder acceder al código desde simulaciones en **proteus**.
 
 
-## 6. Simulación con avr:
+### 5.1 Simulación con avr:
 
 Habilitar en template/platformio.ini la linea:
 
@@ -102,7 +102,7 @@ En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi el
 
 <img width="434" height="293" alt="image" src="https://github.com/user-attachments/assets/7d5232af-3274-4cbe-9775-f295893531a8" />
 
-##Primeros pasos:
+## Primeros pasos:
 
 <img width="1142" height="895" alt="image" src="https://github.com/user-attachments/assets/438a8901-01db-40e3-8e91-c0ab82ccb465" />
 
