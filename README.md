@@ -86,3 +86,55 @@ El archivo compilado `firmware.elf` se genera en la ruta `template/.pio/build/AT
 Es recomendable antes de grabar un nuevo programa en la placa, darle a clean (icono del tacho de basura), antes de compilar ya que a veces sino se graba nuevamente el programa viejo.
 
 Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_for_proteus.py`) copiará automáticamente los archivos `.c` y `.h` de la carpeta `src` a la carpeta del build. Teniendo los archivos originales en una carpeta src junto al archivo .elf, nos permite poder acceder al código desde simulaciones en **proteus**.
+
+
+## 6. Simulación con avr:
+
+Habilitar en template/platformio.ini la linea:
+
+```ini
+ debug_tool = simavr
+```
+
+En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi elegimos la opcion "PIO Debug", equivalente a ejecuta el comando pio debug en consola.
+
+(insertar captura)
+
+### Posibles errores:
+
+Si sale algun error en consola por dependencias como el siguinte:
+
+```bash
+undefined/home/xxxx/.platformio/packages/toolchain-atmelavr/bin/avr-gdb: error while loading shared libraries: libtinfo.so.5: cannot open shared object file: No such file or directory
+```
+
+Puede solucionarse simplemente instalando la dependencia no encontrada:
+
+En el caso del ejemplo vemos que no puede encontrar libtinfo.so.5, en ubuntu o debian puede instalarse con "apt install libtinfo", si la depedencia fuera vieja (como el caso del ejemplo) y la version de la distribucion no la tiene soportada, podemos generar un link simbolico de la version equivalente actual a la anterior:
+
+Verificamos si la version actual la tenemos instalada (y sino la instalamos):
+
+```bash
+ls /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+ls: cannot access '/usr/lib/x86_64-linux-gnu/libtinfo.so.5': No such file or directory
+
+ls -l /usr/lib/x86_64-linux-gnu/libtinfo.so.6
+lrwxrwxrwx 1 root root 15 abr  8  2024 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.4
+#Vemos que tenemos la version 6.4 instalada
+```
+
+Creamos el link simbolico para poder resolver la dependencia de la version solicitada:
+
+```bash
+sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+#Verificamos con:
+ls -l /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+# Y ahora si quedo 'existente' la version que necesitamos
+lrwxrwxrwx 1 root root 41 mar 22 20:07 /usr/lib/x86_64-linux-gnu/libtinfo.so.5 -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+```
+
+De esta manera ahora la dependencia "libtinfo.so.5" queda resuelta apuntando a la libtinfo.so.6.4. Probamos ejecutar debug nuevamente, y seguimos resolviendo dependencias de la misma manera o instalando las mismas, hasta que no tire mas errores. (Esto es comun en versiones mas modernas de distribuciones como ubuntu 24)
+
+
+
+
