@@ -90,7 +90,20 @@ Es recomendable antes de grabar un nuevo programa en la placa, darle a clean (ic
 Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_for_proteus.py`) copiará automáticamente los archivos `.c` y `.h` de la carpeta `src` a la carpeta del build. Teniendo los archivos originales en una carpeta src junto al archivo .elf, nos permite poder acceder al código desde simulaciones en **proteus**.
 
 
-### 5.1 Simulación con avr:
+### 5.1 Simulación con simavr:
+
+Comandos instalacion Debian/Ubuntu
+NOTA: No es necesario instalar estos paquetes para usar la herramienta provista por platformio, pero si se desea utilizar herramientas mas avanzadas de la misma, es necesario.
+
+```bash
+ sudo apt install binutils-avr gcc-avr avr-libc gdb-avr simavr avrdude
+```
+* *binutils-avr*: assembler, linker and basic tools to manipulate object code.
+* *gcc-avr*: C language compiler. Front-end to compile C and assembly code.
+* *avr-libc*: standard C library for the Atmel AVR family.
+* *gdb-avr*: AVR debugger.
+* *simavr*: AVR simulator.
+* *avrdude*: AVR programmer.
 
 Habilitar en template/platformio.ini la linea:
 
@@ -118,6 +131,8 @@ Ademas podemos ejecutar por pasos la simulacion desde los comandos que provee la
 #### Toda la documentacion relacionada a la consola de GNU Deugger puede encontrarse en <insertar link / comando>
 
 #### Para mayor detalle y ejemplos de uso de simavr, se encuentra el repositorio oficial del proyecto con mas informacion: `https://github.com/buserror/simavr`
+
+### VCD y analizador logico:
 
 
 
