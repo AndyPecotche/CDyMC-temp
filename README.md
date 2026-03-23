@@ -92,18 +92,19 @@ Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_
 
 ### 5.1 Simulación con simavr:
 
-Comandos instalacion Debian/Ubuntu
-NOTA: No es necesario instalar estos paquetes para usar la herramienta provista por platformio, pero si se desea utilizar herramientas mas avanzadas de la misma, es necesario.
+Instalación en Debian/Ubuntu:
+
+NOTA: No es necesario instalar estas herramientas para usar el simulador integrado de PlatformIO.  
+Sin embargo, si se desea utilizar funcionalidades avanzadas de simavr (como generación de trazas VCD que se vera mas adelante), es necesario contar con los headers del proyecto.
 
 ```bash
- sudo apt install binutils-avr gcc-avr avr-libc gdb-avr simavr avrdude
+# Clonar repositorio de simavr
+mkdir -p /tmp/simavr
+git clone https://github.com/buserror/simavr.git /tmp/simavr
+
+# Copiar header necesario para VCD
+cp /tmp/simavr/simavr/sim/avr/avr_mcu_section.h ../include/avr_mcu_section.h
 ```
-* *binutils-avr*: assembler, linker and basic tools to manipulate object code.
-* *gcc-avr*: C language compiler. Front-end to compile C and assembly code.
-* *avr-libc*: standard C library for the Atmel AVR family.
-* *gdb-avr*: AVR debugger.
-* *simavr*: AVR simulator.
-* *avrdude*: AVR programmer.
 
 Habilitar en template/platformio.ini la linea:
 
@@ -134,10 +135,53 @@ Ademas podemos ejecutar por pasos la simulacion desde los comandos que provee la
 
 ### VCD y analizador logico:
 
+Simavr permite no solo ejecutar firmware AVR, sino también registrar señales internas del microcontrolador (registros, pines, flags, etc.) y exportarlas a un archivo en formato VCD (Value Change Dump).
+Este archivo puede visualizarse con herramientas como GTKWave, permitiendo analizar el comportamiento temporal de las señales.
+En la práctica, esto funciona como un analizador lógico virtual, similar a un osciloscopio digital:
+   - Permite ver cambios de estado en pines
+   - Analizar timing y secuencias
+   - Detectar errores lógicos
+   - Debuggear sin necesidad de hardware físico
+Para esto simavr utiliza una sección especial del binario (.mmcu) donde se define qué señales deben registrarse. Esto se logra mediante una estructura especial:
 
+```c
+const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_
+```
 
+En este proyecto se encuentra el ejemplo de esta estructura declarada en `template/src/vcd.h`:
 
-### Posibles errores:
+```c
+#include <avr/io.h>
+#include "avr_mcu_section.h"
+const struct avr_mmcu_vcd_trace_t _mytrace[];
+```
+
+Y en el ejemplo aplicado en `template/src/vcd.c`, se hace la trazabilidad del estado de:
+
+PIND → estado de entradas digitales (botón)
+PORTB → estado de salidas (LED)
+LED_PB5 → pin específico del LED
+BTN_PD2 → pin específico del botón
+
+```c
+#include <vcd.h> 
+const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_ = {
+
+    // Ver todo el puerto D (entrada)
+    { AVR_MCU_VCD_SYMBOL("PIND"), .what = (void*)&PIND },
+
+    // Ver todo el puerto B (salida)
+    { AVR_MCU_VCD_SYMBOL("PORTB"), .what = (void*)&PORTB },
+
+    // Ver SOLO el LED (PB5)
+    { AVR_MCU_VCD_SYMBOL("LED_PB5"), .mask = (1 << PB5), .what = (void*)&PORTB },
+
+    // Ver SOLO el botón (PD2)
+    { AVR_MCU_VCD_SYMBOL("BTN_PD2"), .mask = (1 << PD2), .what = (void*)&PIND },
+};
+```
+
+#### Posibles errores:
 
 Si sale algun error en consola por dependencias como el siguinte:
 
