@@ -189,6 +189,70 @@ const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_ = {
 build_flags =
     -Wl,--undefined=_mytrace
 ```
+
+El simavr de platformio no generara el archivo vcd, por lo que debe ejecutarse en consola manualmente, para lo cual primero se debe instalar simavr:
+
+En ubuntu/debian:
+```
+sudo apt install simavr
+sudo apt install gtkwave #(opcional pero recomendado para visualizar el archivo VCD)
+```
+Y luego ejecutar:
+```
+simavr -m atmega328p -f 16000000 .pio/build/ATmega328P/firmware.elf
+```
+Se deberia generar un archivo de salida: `gtkwave_trace.vcd`
+Visualizar registro con :
+```
+gtkwave gtkwave_trace.vcd
+```
+
+### Ejemplo:
+
+Modificamos el programa main.c para que ahora alterne automaticamente el estado del registo PB5 un numero finito de veces:
+
+```c
+	for (int i = 0; i < 10; i++) {
+		// Leer PD2 (D2) con pull-up interna: si se conecta a GND -> LOW -> encender LED
+		_delay_ms(1000);
+		PORTB |= (1<<PB5); // encender LED integrado
+		_delay_ms(1000);
+		PORTB &= ~(1<<PB5); // apagar LED
+	}
+```
+Lo compilamos desde platformio o con `pio build`, y luego ejecutamos en la consola simavr (ya que como mencionamos antes con el integrado por platformio no funciona):
+```bash
+simavr -v -m atmega328p -f 16000000 .pio/build/ATmega328P/firmware.elf
+# abrimos gtkwave parados en la raiz del proyecto donde se genera el archivo de salida (junto al .ini):
+gtkwave gtkwave_trace.vcd
+```
+<img width="1247" height="489" alt="image" src="https://github.com/user-attachments/assets/266c62c5-6d0d-4b9b-854b-323aec0da0e6" />
+
+
+Podemos notar que tenemos reigstro del estado de los puertos que listamos en el archivo `template/src/vcd.c` con las mismas etiquetas que le asignamos. PIND y PD2 podemos ver que no se modificaron porque no ingresamos ninguna modificacion para alterarl el valor el mismo, pero podriamos ingresar:
+```
+set var PIND=0b00000000
+```
+Para lograr esto, como no estamos usando el simavr de platformio que nos provee la consola de debug, tendremos que ejecutar simavr con el siguiente comando:
+
+```bash
+simavr -g -m atmega328p -f 16000000 .pio/build/ATmega328P/firmware.elf
+#Salida
+# avr_gdb_init listening on port 1234
+```
+En otra consola ejecutaremos avr_gdb:
+
+```
+#dentro del proyecto
+cd template
+avr-gdb .pio/build/ATmega328P/firmware.elf
+target remote :1234 # nos conectamos al puerto que abrimos antes en avr_gdb_init
+set var PIND = 0b00000000
+```
+En este tipo de ejecucion, a diferencia de la anterior, tendremos que ejecutar `continue` en el GDB, para que la ejecucion retome, y ctr+c para pausarla y modificar valores, por lo que este tipo de uso quizas no presenta tanta utilidad. Alternativamente pueden ingresarse archivos .VCD como entrada a la simulacion.
+
+
+
 #### Posibles errores:
 
 Si sale algun error en consola por dependencias como el siguinte:
