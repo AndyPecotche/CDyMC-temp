@@ -92,10 +92,13 @@ Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_
 
 ### 5.1 Simulación con simavr:
 
+- Si se parte de este proyecto como template en el mismo ya se encuentran aplicados todos los pasos de instalacion/configuracion detallados adelante por lo que se pueden omitir. Se dejan detallados igualmente a modo de instructivo.
+
 Instalación en Debian/Ubuntu:
 
 NOTA: No es necesario instalar estas herramientas para usar el simulador integrado de PlatformIO.  
 Sin embargo, si se desea utilizar funcionalidades avanzadas de simavr (como generación de trazas VCD que se vera mas adelante), es necesario contar con los headers del proyecto.
+
 
 ```bash
 # Clonar repositorio de simavr
@@ -116,7 +119,7 @@ En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi el
 
 <img width="434" height="293" alt="image" src="https://github.com/user-attachments/assets/7d5232af-3274-4cbe-9775-f295893531a8" />
 
-## Primeros pasos:
+## Primeros pasos: 
 
 <img width="1142" height="895" alt="image" src="https://github.com/user-attachments/assets/438a8901-01db-40e3-8e91-c0ab82ccb465" />
 
@@ -181,6 +184,11 @@ const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_ = {
 };
 ```
 
+*IMPORTANTE*: Agregar en el platformio.ini 
+```
+build_flags =
+    -Wl,--undefined=_mytrace
+```
 #### Posibles errores:
 
 Si sale algun error en consola por dependencias como el siguinte:
