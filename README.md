@@ -47,10 +47,12 @@ Con la instalación finalizada, podes iniciar un proyecto utilizando un archivo 
 ```ini
 [env:ATmega328P]
 platform = atmelavr
-board = uno
-framework = arduino
+board = ATmega328P
+#debug_tool = simavr #Descomentar para ejecutar simulaciones con simavr.
 build_type = debug
-extra_scripts = post:scripts/copy_sources_for_proteus.py
+extra_scripts =
+ 	post:scripts/copy_sources_for_proteus.py
+upload_protocol = arduino
 ``` 
 
 ### Descarga del proyecto base
