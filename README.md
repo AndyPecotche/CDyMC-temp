@@ -47,10 +47,12 @@ Con la instalación finalizada, podes iniciar un proyecto utilizando un archivo 
 ```ini
 [env:ATmega328P]
 platform = atmelavr
-board = uno
-framework = arduino
+board = ATmega328P
+#debug_tool = simavr #Descomentar para ejecutar simulaciones con simavr.
 build_type = debug
-extra_scripts = post:scripts/copy_sources_for_proteus.py
+extra_scripts =
+ 	post:scripts/copy_sources_for_proteus.py
+upload_protocol = arduino
 ``` 
 
 ### Descarga del proyecto base
@@ -96,9 +98,26 @@ Habilitar en template/platformio.ini la linea:
  debug_tool = simavr
 ```
 
-En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi elegimos la opcion "PIO Debug", equivalente a ejecuta el comando pio debug en consola.
+En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi elegimos la opcion "PIO Debug", equivalente a ejecuta el comando pio debug en consola:
 
-(insertar captura)
+<img width="434" height="293" alt="image" src="https://github.com/user-attachments/assets/7d5232af-3274-4cbe-9775-f295893531a8" />
+
+##Primeros pasos:
+
+<img width="1142" height="895" alt="image" src="https://github.com/user-attachments/assets/438a8901-01db-40e3-8e91-c0ab82ccb465" />
+
+Luego de darle a RUN, la simulacion comenzara a ejecutarse, para interactual con la misma vamos a utlizar la consola de GNU Debugger (Referencia numero 2), la misma nos permitira interactuar ya sea para consultar como modificar, variables, pines, registros, interrupciones, etc.
+En el apartado de WATCH (referencia 1), podemos definir expresiones de la consola para hacer seguimiento a los valores de las mismas sin tener que escribir los comandos en la consola. 
+Los comandos solo pueden introducirse mientras la simulacion se encuentra pausada, tambien pueden agregarse breakpoints desde conosla como desde el mismo IDE.
+En el ejemplo de la captura podemos observar el comando para modificar el registro PIND, para encender el LED (definir PD2 en bajo), y en el apartado de WATCH observar su valor actual (0b00000100) (PD2 en alto).
+Ademas podemos ejecutar por pasos la simulacion desde los comandos que provee la UI (referencia 3).
+
+#### Toda la documentacion relacionada a la consola de GNU Deugger puede encontrarse en <insertar link / comando>
+
+#### Para mayor detalle y ejemplos de uso de simavr, se encuentra el repositorio oficial del proyecto con mas informacion: `https://github.com/buserror/simavr`
+
+
+
 
 ### Posibles errores:
 
