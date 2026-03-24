@@ -1,4 +1,6 @@
 #include <avr/io.h> // Definicion de Registros del microcontrolador
+#include <vcd.h> // Para usar la funcionalidad de VCD
+#include <util/delay.h> 
 #define F_CPU 16000000UL // Especifico la frecuencia de reloj del MCU en 16MHz
 
 int main(void)
@@ -11,13 +13,13 @@ int main(void)
 	PORTD |= (1<<PD2);
 
  	while (1) 
-    {
-		// Leer PD2 (D2) con pull-up interna: si se conecta a GND -> LOW -> encender LED
-		if (!(PIND & (1<<PD2))) {
-			PORTB |= (1<<PB5); // encender LED integrado
-		} else {
+     {
+	// 	// Leer PD2 (D2) con pull-up interna: si se conecta a GND -> LOW -> encender LED
+	 	if (!(PIND & (1<<PD2))) {
+	 		PORTB |= (1<<PB5); // encender LED integrado
+	 	} else {
 			PORTB &= ~(1<<PB5); // apagar LED
-		}
-		
-    }
+	 	}
+
+	}
 }
