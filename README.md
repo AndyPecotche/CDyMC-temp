@@ -90,7 +90,7 @@ Es recomendable antes de grabar un nuevo programa en la placa, darle a clean (ic
 Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_for_proteus.py`) copiará automáticamente los archivos `.c` y `.h` de la carpeta `src` a la carpeta del build. Teniendo los archivos originales en una carpeta src junto al archivo .elf, nos permite poder acceder al código desde simulaciones en **proteus**.
 
 
-### 5.1 Simulación con simavr:
+### 5.1 Simulación con simavr (linux):
 
 - Si se parte de este proyecto como template en el mismo ya se encuentran aplicados todos los pasos de instalacion/configuracion detallados adelante por lo que se pueden omitir. Se dejan detallados igualmente a modo de instructivo.
 
