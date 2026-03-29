@@ -259,5 +259,53 @@ lrwxrwxrwx 1 root root 41 mar 22 20:07 /usr/lib/x86_64-linux-gnu/libtinfo.so.5 -
 De esta manera ahora la dependencia "libtinfo.so.5" queda resuelta apuntando a la libtinfo.so.6.4. Probamos ejecutar debug nuevamente, y seguimos resolviendo dependencias de la misma manera o instalando las mismas, hasta que no tire mas errores. (Esto es comun en versiones mas modernas de distribuciones como ubuntu 24)
 
 
+### 5.2 Simulación con sim-stub (linux): 
+Documentacion oficial: https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
+
+Esta herramienta nos permite hacer debug en la placa arduino desde platformio, estableciendo breakpoints, y pudiendo consultar variables y registros, en tiempo de ejecucion, para esto, la herramienta hace uso de la UART del microcontrolador, interrupciones y uso de watchdog lo cual limita el uso de la herramienta o el uso de la uart en los programas a debugear.
+
+Para habilitar esta herramienta, se debe agregar la siguiente documentacion en el archivo 'platformio.ini':
+
+'''
+debug_tool = avr-stub
+debug_port = /dev/ttyACM1 #Especificar el puerto serie al que esta conectado la placa arduino
+lib_deps =
+    jdolinay/avr-debugger @ ~1.4
+debug_build_flags = 
+  -O0 
+  -ggdb3
+  -DAVR8_BREAKPOINT_MODE=1 
+  -DAVR8_SWINT_SOURCE=1 ; Usar INT1 (PD3) para el debugger y dejar libre INT0 (PD2)
+'''
+
+Otras opciones de flags:
+AVR8_SWINT_SOURCE = -1 //Permite generar interrupcion por software para no usar interrupcion en pin externo. (En el ejemplo se define PD3)
+AVR8_USE_TIMER0_INSTEAD_OF_WDT = 1 //Utiliza timer0 en lugar de watchdog timer
+
+En nuestra aplicacion tenemos que incluir:
+'''
+#include <avr/interrupt.h>
+#include "avr8-stub.h"
+'''
+y agregar al inicio de la aplicacion:
+'''
+debug_init();
+sei(); 
+'''
+
+Y ya con esto podremos ir a la ventana de ejecucion de VScode (la misma que para la ejecucion con sim-avr), y ejecutar 'PIO debug'.
+
+El uso de esta herramienta es bastante similar a sim-avr desde platformio, en el sentido que podremos establecer breakpoints desde el IDE, asi como pausar o ejecutar por pasos el programa, y agregar variables o registros para hacer seguimiento del valor de los mismos, asi como modificarlos.
+
+La ejecucion de comandos se realiza desde la pestaña de 'DEBUG CONSOLE':
+
+<img width="602" height="140" alt="image" src="https://github.com/user-attachments/assets/823e9f1a-be6e-4ff6-a209-8ca18d55e710" />
+
+<img width="878" height="454" alt="image" src="https://github.com/user-attachments/assets/d4d808ef-78f4-4907-bfdf-d59139e8b2f0" />
+
+Comando de ayuda: 'help'
+
+
+
 
 
