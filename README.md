@@ -47,10 +47,12 @@ Con la instalación finalizada, podes iniciar un proyecto utilizando un archivo 
 ```ini
 [env:ATmega328P]
 platform = atmelavr
-board = uno
-framework = arduino
+board = ATmega328P
+#debug_tool = simavr #Descomentar para ejecutar simulaciones con simavr.
 build_type = debug
-extra_scripts = post:scripts/copy_sources_for_proteus.py
+extra_scripts =
+ 	post:scripts/copy_sources_for_proteus.py
+upload_protocol = arduino
 ``` 
 
 ### Descarga del proyecto base
@@ -86,3 +88,224 @@ El archivo compilado `firmware.elf` se genera en la ruta `template/.pio/build/AT
 Es recomendable antes de grabar un nuevo programa en la placa, darle a clean (icono del tacho de basura), antes de compilar ya que a veces sino se graba nuevamente el programa viejo.
 
 Si utilizas el proyecto base del enlace, un script de post-build (`copy_sources_for_proteus.py`) copiará automáticamente los archivos `.c` y `.h` de la carpeta `src` a la carpeta del build. Teniendo los archivos originales en una carpeta src junto al archivo .elf, nos permite poder acceder al código desde simulaciones en **proteus**.
+
+
+### 5.1 Simulación con simavr (linux):
+
+- Si se parte de este proyecto como template en el mismo ya se encuentran aplicados todos los pasos de instalacion/configuracion detallados adelante por lo que se pueden omitir. Se dejan detallados igualmente a modo de instructivo.
+
+Instalación en Debian/Ubuntu:
+
+NOTA: No es necesario instalar estas herramientas para usar el simulador integrado de PlatformIO.  
+Sin embargo, si se desea utilizar funcionalidades avanzadas de simavr (como generación de trazas VCD que se vera mas adelante), es necesario contar con los headers del proyecto.
+
+
+```bash
+# Clonar repositorio de simavr
+mkdir -p /tmp/simavr
+git clone https://github.com/buserror/simavr.git /tmp/simavr
+
+# Copiar header necesario para VCD
+cp /tmp/simavr/simavr/sim/avr/avr_mcu_section.h ../include/avr_mcu_section.h
+```
+
+Habilitar en template/platformio.ini la linea:
+
+```ini
+ debug_tool = simavr
+```
+
+En el panel izquierdo nos vamos a la pestaña de "Ejecucion" de VScode, y ahi elegimos la opcion "PIO Debug", equivalente a ejecuta el comando pio debug en consola:
+
+<img width="434" height="293" alt="image" src="https://github.com/user-attachments/assets/7d5232af-3274-4cbe-9775-f295893531a8" />
+
+## Primeros pasos: 
+
+<img width="1142" height="895" alt="image" src="https://github.com/user-attachments/assets/438a8901-01db-40e3-8e91-c0ab82ccb465" />
+
+- Luego de darle a `RUN`, la simulacion comenzara a ejecutarse, para interactual con la misma vamos a utlizar la consola de GNU Debugger *(Referencia numero 2)*, la misma nos permitira interactuar ya sea para consultar como modificar, variables, pines, registros, interrupciones, etc.
+
+- En el apartado de `WATCH` *(referencia 1)*, podemos definir expresiones de la consola para hacer seguimiento a los valores de las mismas sin tener que escribir los comandos en la consola. 
+
+- Los comandos solo pueden introducirse mientras la simulacion se encuentra `pausada`, tambien pueden agregarse `breakpoints` desde conosla como desde el mismo IDE.
+
+- En el ejemplo de la captura podemos observar el comando para modificar el registro `PIND`, para encender el LED (definir `PD2` en bajo), y en el apartado de `WATCH` observar su valor actual (0b00000100) (`PD2` en alto).
+Ademas podemos ejecutar por pasos la simulacion desde los comandos que provee la UI *(referencia 3)*.
+
+#### Toda la documentacion relacionada a la consola de GNU Deugger puede encontrarse en <insertar link / comando>
+
+#### Para mayor detalle y ejemplos de uso de simavr, se encuentra el repositorio oficial del proyecto con mas informacion: `https://github.com/buserror/simavr`
+
+### VCD y analizador logico:
+
+Simavr permite no solo ejecutar firmware AVR, sino también registrar señales internas del microcontrolador (registros, pines, flags, etc.) y exportarlas a un archivo en formato VCD (Value Change Dump).
+Este archivo puede visualizarse con herramientas como GTKWave, permitiendo analizar el comportamiento temporal de las señales.
+En la práctica, esto funciona como un analizador lógico virtual, similar a un osciloscopio digital:
+   - Permite ver cambios de estado en pines
+   - Analizar timing y secuencias
+   - Detectar errores lógicos
+   - Debuggear sin necesidad de hardware físico
+Para esto simavr utiliza una sección especial del binario (.mmcu) donde se define qué señales deben registrarse. Esto se logra mediante una estructura especial:
+
+```c
+const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_
+```
+
+En este proyecto se encuentra el ejemplo de esta estructura declarada en `template/src/vcd.h`:
+
+```c
+#include <avr/io.h>
+#include "avr_mcu_section.h"
+const struct avr_mmcu_vcd_trace_t _mytrace[];
+```
+
+Y en el ejemplo aplicado en `template/src/vcd.c`, se hace la trazabilidad del estado de:
+
+PIND → estado de entradas digitales (botón)
+PORTB → estado de salidas (LED)
+LED_PB5 → pin específico del LED
+BTN_PD2 → pin específico del botón
+
+```c
+#include <vcd.h> 
+const struct avr_mmcu_vcd_trace_t _mytrace[] _MMCU_ = {
+
+    // Ver todo el puerto D (entrada)
+    { AVR_MCU_VCD_SYMBOL("PIND"), .what = (void*)&PIND },
+
+    // Ver todo el puerto B (salida)
+    { AVR_MCU_VCD_SYMBOL("PORTB"), .what = (void*)&PORTB },
+
+    // Ver SOLO el LED (PB5)
+    { AVR_MCU_VCD_SYMBOL("LED_PB5"), .mask = (1 << PB5), .what = (void*)&PORTB },
+
+    // Ver SOLO el botón (PD2)
+    { AVR_MCU_VCD_SYMBOL("BTN_PD2"), .mask = (1 << PD2), .what = (void*)&PIND },
+};
+```
+
+*IMPORTANTE*: Agregar en el platformio.ini 
+```
+build_flags =
+    -Wl,--undefined=_mytrace
+```
+y para generar archivo svc:
+```
+debug_server =
+	${platformio.packages_dir}/tool-simavr/bin/simavr
+	-g
+	-v
+	-m
+	atmega328p
+	-f
+	16000000
+	$PROG_PATH
+```
+
+### Ejemplo:
+
+Modificamos el programa main.c para que ahora alterne automaticamente el estado del registo PB5 un numero finito de veces:
+
+```c
+	for (int i = 0; i < 10; i++) {
+		// Leer PD2 (D2) con pull-up interna: si se conecta a GND -> LOW -> encender LED
+		_delay_ms(1000);
+		PORTB |= (1<<PB5); // encender LED integrado
+		_delay_ms(1000);
+		PORTB &= ~(1<<PB5); // apagar LED
+	}
+```
+Lo compilamos desde platformio o con `pio build`, y luego ejecutamos:
+```bash
+# abrimos gtkwave parados en la raiz del proyecto donde se genera el archivo de salida (junto al .ini):
+gtkwave gtkwave_trace.vcd
+```
+<img width="1247" height="489" alt="image" src="https://github.com/user-attachments/assets/266c62c5-6d0d-4b9b-854b-323aec0da0e6" />
+
+
+#### Posibles errores:
+
+Si sale algun error en consola por dependencias como el siguinte:
+
+```bash
+undefined/home/xxxx/.platformio/packages/toolchain-atmelavr/bin/avr-gdb: error while loading shared libraries: libtinfo.so.5: cannot open shared object file: No such file or directory
+```
+
+Puede solucionarse simplemente instalando la dependencia no encontrada:
+
+En el caso del ejemplo vemos que no puede encontrar libtinfo.so.5, en ubuntu o debian puede instalarse con "apt install libtinfo", si la depedencia fuera vieja (como el caso del ejemplo) y la version de la distribucion no la tiene soportada, podemos generar un link simbolico de la version equivalente actual a la anterior:
+
+Verificamos si la version actual la tenemos instalada (y sino la instalamos):
+
+```bash
+ls /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+ls: cannot access '/usr/lib/x86_64-linux-gnu/libtinfo.so.5': No such file or directory
+
+ls -l /usr/lib/x86_64-linux-gnu/libtinfo.so.6
+lrwxrwxrwx 1 root root 15 abr  8  2024 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.4
+#Vemos que tenemos la version 6.4 instalada
+```
+
+Creamos el link simbolico para poder resolver la dependencia de la version solicitada:
+
+```bash
+sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+#Verificamos con:
+ls -l /usr/lib/x86_64-linux-gnu/libtinfo.so.5
+# Y ahora si quedo 'existente' la version que necesitamos
+lrwxrwxrwx 1 root root 41 mar 22 20:07 /usr/lib/x86_64-linux-gnu/libtinfo.so.5 -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+```
+
+De esta manera ahora la dependencia "libtinfo.so.5" queda resuelta apuntando a la libtinfo.so.6.4. Probamos ejecutar debug nuevamente, y seguimos resolviendo dependencias de la misma manera o instalando las mismas, hasta que no tire mas errores. (Esto es comun en versiones mas modernas de distribuciones como ubuntu 24)
+
+
+### 5.2 Simulación con sim-stub (linux): 
+Documentacion oficial: https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
+
+Esta herramienta nos permite hacer debug en la placa arduino desde platformio, estableciendo breakpoints, y pudiendo consultar variables y registros, en tiempo de ejecucion, para esto, la herramienta hace uso de la UART del microcontrolador, interrupciones y uso de watchdog lo cual limita el uso de la herramienta o el uso de la uart en los programas a debugear.
+
+Para habilitar esta herramienta, se debe agregar la siguiente documentacion en el archivo 'platformio.ini':
+
+'''
+debug_tool = avr-stub
+debug_port = /dev/ttyACM1 #Especificar el puerto serie al que esta conectado la placa arduino
+lib_deps =
+    jdolinay/avr-debugger @ ~1.4
+debug_build_flags = 
+  -O0 
+  -ggdb3
+  -DAVR8_BREAKPOINT_MODE=1 
+  -DAVR8_SWINT_SOURCE=1 ; Usar INT1 (PD3) para el debugger y dejar libre INT0 (PD2)
+'''
+
+Otras opciones de flags:
+AVR8_SWINT_SOURCE = -1 //Permite generar interrupcion por software para no usar interrupcion en pin externo. (En el ejemplo se define PD3)
+AVR8_USE_TIMER0_INSTEAD_OF_WDT = 1 //Utiliza timer0 en lugar de watchdog timer
+
+En nuestra aplicacion tenemos que incluir:
+'''
+#include <avr/interrupt.h>
+#include "avr8-stub.h"
+'''
+y agregar al inicio de la aplicacion:
+'''
+debug_init();
+sei(); 
+'''
+
+Y ya con esto podremos ir a la ventana de ejecucion de VScode (la misma que para la ejecucion con sim-avr), y ejecutar 'PIO debug'.
+
+El uso de esta herramienta es bastante similar a sim-avr desde platformio, en el sentido que podremos establecer breakpoints desde el IDE, asi como pausar o ejecutar por pasos el programa, y agregar variables o registros para hacer seguimiento del valor de los mismos, asi como modificarlos.
+
+La ejecucion de comandos se realiza desde la pestaña de 'DEBUG CONSOLE':
+
+<img width="602" height="140" alt="image" src="https://github.com/user-attachments/assets/823e9f1a-be6e-4ff6-a209-8ca18d55e710" />
+
+<img width="878" height="454" alt="image" src="https://github.com/user-attachments/assets/d4d808ef-78f4-4907-bfdf-d59139e8b2f0" />
+
+Comando de ayuda: 'help'
+
+
+
+
+
